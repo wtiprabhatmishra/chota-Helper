@@ -3,81 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chhota Helper - Tumhara Project Dost</title>
+    <title>Chhota Helper - Tumhara Super Project Dost</title>
     <style>
         body {
             font-family: 'Comic Sans MS', cursive;
-            background: linear-gradient(135deg, #f0f8ff, #e6e6fa);
+            background: linear-gradient(135deg, #f0f8ff, #e6e6fa, #ffe4e1);
             text-align: center;
             margin: 0;
             padding: 20px;
             animation: fadeIn 1s ease-in;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         h1 {
             color: #ff4500;
-            font-size: 45px;
-            text-shadow: 3px 3px #ffd700;
+            font-size: 50px;
+            text-shadow: 4px 4px #ffd700;
             animation: bounce 2s infinite;
         }
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-10px); }
-            60% { transform: translateY(-5px); }
+            40% { transform: translateY(-15px); }
+            60% { transform: translateY(-7px); }
         }
         #chat-container {
-            width: 70%;
+            width: 75%;
             margin: 30px auto;
             background-color: #fffacd;
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden; /* Ensure no overflow */
         }
         #chat-box {
-            height: 350px;
+            height: 400px;
             overflow-y: auto;
             background-color: #f0fff0;
-            padding: 15px;
+            padding: 20px;
             border-radius: 15px;
-            border: 3px solid #32cd32;
+            border: 4px solid #32cd32;
             margin-bottom: 20px;
         }
         .message {
-            padding: 12px;
-            margin: 8px;
-            border-radius: 12px;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 15px;
             animation: slideIn 0.5s ease-in;
+            transition: all 0.3s ease;
         }
+        .message:hover { transform: scale(1.02); }
         @keyframes slideIn { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         .bot-message { background-color: #87cefa; color: #000; text-align: left; }
         .user-message { background-color: #ffb6c1; color: #000; text-align: right; }
-        #input-area { display: flex; gap: 15px; justify-content: center; }
+        #input-area {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+        }
+        #input-row, #options-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
         #user-input {
             width: 60%;
-            padding: 12px;
+            padding: 10px;
             border: 3px solid #ff69b4;
-            border-radius: 12px;
+            border-radius: 15px;
             font-size: 18px;
+            transition: border 0.3s ease;
         }
-        #send-btn, #lang-btn {
-            padding: 12px 25px;
-            background-color: #ff69b4;
+        #user-input:focus { border-color: #ff1493; outline: none; }
+        #send-btn, #voice-btn, #lang-btn, #download-btn {
+            padding: 8px 20px;
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
             color: white;
             border: none;
             border-radius: 12px;
             cursor: pointer;
-            font-size: 18px;
-            transition: transform 0.2s;
+            font-size: 16px;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        #send-btn:hover, #lang-btn:hover {
+        #send-btn:hover, #voice-btn:hover, #lang-btn:hover, #download-btn:hover {
             transform: scale(1.1);
-            background-color: #ff1493;
+            box-shadow: 0 0 15px rgba(255, 20, 147, 0.7);
+        }
+        #progress-bar {
+            width: 0%;
+            height: 10px;
+            background: linear-gradient(90deg, #32cd32, #ffd700);
+            border-radius: 5px;
+            margin: 10px auto;
+            transition: width 2s ease;
+            display: none;
         }
         footer {
             margin-top: 20px;
-            font-size: 14px;
+            font-size: 16px;
             color: #ff4500;
             text-shadow: 1px 1px #ffd700;
+            padding-bottom: 20px;
         }
         footer a {
             color: #ff69b4;
@@ -93,15 +124,22 @@
     <div id="chat-container">
         <div id="chat-box">
             <div class="message bot-message" id="welcome-msg">
-                Hello, chhote dost! Main hoon Chhota Helper – tumhara project buddy! 🌟<br>
+                Hello, chhote dost! Main hoon Chhota Helper – tumhara super project dost! 🌟<br>
                 Batao: Class number aur Topic (e.g., "Class 5, Volcano")<br>
-                Main pura research karke text, chart, aur image ideas doonga!
+                Ya mic button dabao aur bolo! Main research karke sab doonga – text, chart, aur image ideas!
             </div>
         </div>
+        <div id="progress-bar"></div>
         <div id="input-area">
-            <input type="text" id="user-input" placeholder="Class aur Topic likho...">
-            <button id="send-btn" onclick="sendMessage()">Send</button>
-            <button id="lang-btn" onclick="toggleLanguage()">Hindi</button>
+            <div id="input-row">
+                <input type="text" id="user-input" placeholder="Class aur Topic likho...">
+                <button id="send-btn" onclick="sendMessage()">Send</button>
+            </div>
+            <div id="options-row">
+                <button id="voice-btn" onclick="startVoiceInput()">🎤</button>
+                <button id="lang-btn" onclick="toggleLanguage()">Hindi</button>
+                <button id="download-btn" onclick="downloadProject()">Download PDF</button>
+            </div>
         </div>
     </div>
     <footer>
@@ -110,6 +148,7 @@
 
     <script>
         let isHindi = false;
+        let lastResponse = "";
 
         function adjustLevel(classNum) {
             if (classNum >= 1 && classNum <= 2) return "simple";
@@ -122,15 +161,20 @@
             isHindi = !isHindi;
             document.getElementById("lang-btn").innerText = isHindi ? "English" : "Hindi";
             const welcomeMsg = isHindi ? 
-                "हाय, छोटे दोस्त! मैं हूँ छोटा हेल्पर – तुम्हारा प्रोजेक्ट दोस्त! 🌟<br>बताओ: क्लास नंबर और टॉपिक (जैसे 'क्लास 5, वोल्केनो')<br>मैं पूरा रिसर्च करके टेक्स्ट, चार्ट, और इमेज आइडियाज़ दूंगा!" :
-                "Hello, chhote dost! Main hoon Chhota Helper – tumhara project buddy! 🌟<br>Batao: Class number aur Topic (e.g., 'Class 5, Volcano')<br>Main pura research karke text, chart, aur image ideas doonga!";
+                "हाय, छोटे दोस्त! मैं हूँ छोटा हेल्पर – तुम्हारा सुपर प्रोजेक्ट दोस्त! 🌟<br>बताओ: क्लास नंबर और टॉपिक (जैसे 'क्लास 5, वोल्केनो')<br>या माइक बटन दबाओ और बोलो! मैं रिसर्च करके सब दूंगा – टेक्स्ट, चार्ट, और इमेज आइडियाज़!" :
+                "Hello, chhote dost! Main hoon Chhota Helper – tumhara super project dost! 🌟<br>Batao: Class number aur Topic (e.g., 'Class 5, Volcano')<br>Ya mic button dabao aur bolo! Main research karke sab doonga – text, chart, aur image ideas!";
             document.getElementById("welcome-msg").innerHTML = welcomeMsg;
         }
 
         async function fetchWikipedia(topic) {
+            const progressBar = document.getElementById("progress-bar");
+            progressBar.style.display = "block";
+            progressBar.style.width = "0%";
+            setTimeout(() => progressBar.style.width = "100%", 100);
+            
             const url = `https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&format=json&titles=${encodeURIComponent(topic)}&origin=*`;
             try {
-                addMessage(isHindi ? "थोड़ा रुकें, मैं ढूंढ रहा हूँ..." : "Wait a sec, I’m researching...", "bot-message");
+                addMessage(isHindi ? "थोड़ा रुकें, मैं रिसर्च कर रहा हूँ..." : "Wait a sec, I’m researching...", "bot-message");
                 const response = await fetch(url);
                 const data = await response.json();
                 const pages = data.query.pages;
@@ -139,9 +183,10 @@
                     return null;
                 }
                 const extract = pages[pageId].extract;
+                progressBar.style.display = "none";
                 return extract.split(". ").map(s => s + ".");
             } catch (error) {
-                console.error("API Error:", error);
+                progressBar.style.display = "none";
                 return null;
             }
         }
@@ -150,46 +195,49 @@
             const langSuffix = isHindi ? "hi" : "en";
             let text, chart, image;
 
-            // Adjust text by class level
             if (sentences) {
                 if (level === "simple") {
-                    text = sentences[0]; // First sentence only
+                    text = sentences[0];
                 } else if (level === "medium") {
-                    text = sentences.slice(0, 2).join(" "); // First 2 sentences
+                    text = sentences.slice(0, 2).join(" ");
                 } else {
-                    text = sentences.slice(0, 4).join(" "); // Up to 4 sentences
+                    text = sentences.slice(0, 4).join(" ");
                 }
             } else {
                 text = isHindi ? 
-                    `${topic} के बारे में कुछ रोचक बातें सीखें।` : 
-                    `Learn some cool facts about ${topic}.`;
+                    `${topic} के बारे में कुछ मज़ेदार बातें हैं जो तुम सीख सकते हो।` : 
+                    `There are some fun things to learn about ${topic}.`;
             }
 
-            // Topic-specific chart and image ideas
             if (topic.toLowerCase().includes("volcano") || topic.toLowerCase().includes("earth") || topic.toLowerCase().includes("plant")) {
                 chart = level === "simple" ? 
-                    (isHindi ? `${topic} का एक आसान चित्र बनाओ।` : `Make a simple ${topic} drawing.`) :
+                    (isHindi ? `${topic} का एक छोटा चित्र बनाओ।` : `Draw a small ${topic} picture.`) :
                     level === "medium" ? 
-                    (isHindi ? `${topic} का चित्र बनाओ और नाम लिखो।` : `Draw ${topic} with labels.`) :
-                    (isHindi ? `${topic} का विस्तृत चित्र बनाओ, रंग और नामों के साथ।` : `Create a detailed ${topic} diagram with colors and labels.`);
-                image = isHindi ? `${topic} की एक तस्वीर ढूंढो।` : `Find a picture of ${topic}.`;
+                    (isHindi ? `${topic} का चित्र बनाओ और 2 चीज़ें नाम दो।` : `Draw ${topic} and label 2 parts.`) :
+                    (isHindi ? `${topic} का पूरा चित्र बनाओ, रंगों और नामों के साथ।` : `Draw a full ${topic} diagram with colors and labels.`);
+                image = isHindi ? `${topic} की एक शानदार तस्वीर ढूंढो।` : `Find a cool picture of ${topic}.`;
             } else if (topic.toLowerCase().includes("fraction") || topic.toLowerCase().includes("number") || topic.toLowerCase().includes("math")) {
                 chart = level === "simple" ? 
-                    (isHindi ? `${topic} का छोटा टेबल बनाओ।` : `Draw a small ${topic} table.`) :
+                    (isHindi ? `${topic} का एक आसान टेबल बनाओ।` : `Make a simple ${topic} table.`) :
                     level === "medium" ? 
-                    (isHindi ? `${topic} का टेबल बनाओ।` : `Make a ${topic} table.`) :
-                    (isHindi ? `${topic} का ग्राफ बनाओ उदाहरणों के साथ।` : `Draw a ${topic} graph with examples.`);
-                image = isHindi ? `${topic} का उदाहरण चित्र लाओ।` : `Get an example picture of ${topic}.`;
+                    (isHindi ? `${topic} का टेबल बनाओ और 3 उदाहरण दो।` : `Draw a ${topic} table with 3 examples.`) :
+                    (isHindi ? `${topic} का ग्राफ बनाओ और 5 उदाहरणों के साथ समझाओ।` : `Create a ${topic} graph and explain with 5 examples.`);
+                image = isHindi ? `${topic} का एक रंगीन चार्ट ढूंढो।` : `Find a colorful ${topic} chart.`;
             } else {
                 chart = level === "simple" ? 
-                    (isHindi ? `${topic} का आसान चित्र बनाओ।` : `Draw a simple ${topic} picture.`) :
+                    (isHindi ? `${topic} का एक आसान नक्शा बनाओ।` : `Draw a simple ${topic} map.`) :
                     level === "medium" ? 
-                    (isHindi ? `${topic} का नक्शा बनाओ।` : `Make a ${topic} map.`) :
-                    (isHindi ? `${topic} का विस्तृत चार्ट या टाइमलाइन बनाओ।` : `Create a detailed ${topic} chart or timeline.`);
-                image = isHindi ? `${topic} का फोटो या नक्शा ढूंढो।` : `Find a photo or map of ${topic}.`;
+                    (isHindi ? `${topic} का नक्शा बनाओ और 2 जगहें दिखाओ।` : `Make a ${topic} map with 2 places.`) :
+                    (isHindi ? `${topic} का विस्तृत नक्शा या टाइमलाइन बनाओ, रंगों के साथ。` : `Create a detailed ${topic} map or timeline with colors.`);
+                image = isHindi ? `${topic} का एक सुंदर फोटो या नक्शा ढूंढो。` : `Find a beautiful ${topic} photo or map.`;
             }
 
-            return { text, chart, image };
+            const tips = isHindi ? 
+                ["रोज़ 10 मिनट पढ़ाई करो, मज़ा आएगा!", "रंगों से सीखना आसान होता है!", "अपने दोस्तों के साथ प्रोजेक्ट शेयर करो!"] :
+                ["Study 10 minutes daily, it’s fun!", "Use colors to learn faster!", "Share your project with friends!"];
+            const randomTip = tips[Math.floor(Math.random() * tips.length)];
+
+            return { text, chart, image, tip: randomTip };
         }
 
         async function sendMessage() {
@@ -222,14 +270,49 @@
                 const researchData = await fetchWikipedia(topic);
                 const content = generateResponse(classNum, topic, level, researchData);
 
-                response += `Text: ${content.text}<br>`;
-                response += `Chart: ${content.chart}<br>`;
-                response += `${isHindi ? "इमेज आइडिया" : "Image Idea"}: ${content.image}<br>`;
+                response += `<strong>Text:</strong> ${content.text}<br>`;
+                response += `<strong>Chart:</strong> ${content.chart}<br>`;
+                response += `<strong>${isHindi ? "इमेज आइडिया" : "Image Idea"}:</strong> ${content.image}<br>`;
+                response += `<strong>${isHindi ? "टिप" : "Tip"}:</strong> ${content.tip}<br>`;
 
+                lastResponse = response;
                 addMessage(response, "bot-message");
             } catch (e) {
-                addMessage(isHindi ? "कुछ गलत बोला तुमने, ठीक से बोलो जैसे 'Class 5, Volcano'!" : 
+                addMessage(isHindi ? "कुछ गलत बोला तुमne, ठीक से बोलो जैसे 'Class 5, Volcano'!" : 
                     "Kuch galat bola tumne, thik se bolo jaise 'Class 5, Volcano'!", "bot-message");
+            }
+        }
+
+        function startVoiceInput() {
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = isHindi ? "hi-IN" : "en-US";
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                document.getElementById("user-input").value = transcript;
+                sendMessage();
+            };
+            recognition.onerror = () => addMessage(isHindi ? "आवाज़ नहीं सुन पाया!" : "Couldn’t hear you!", "bot-message");
+            recognition.start();
+        }
+
+        function downloadProject() {
+            if (!lastResponse) {
+                addMessage(isHindi ? "पहले प्रोजेक्ट बनाओ!" : "Make a project first!", "bot-message");
+                return;
+            }
+            try {
+                const { jsPDF } = window.jspdf;
+                if (!jsPDF) {
+                    addMessage(isHindi ? "PDF डाउनलोड के लिए इंटरनेट चाहिए!" : "Internet needed for PDF download!", "bot-message");
+                    return;
+                }
+                const doc = new jsPDF();
+                doc.setFont("helvetica");
+                doc.setFontSize(12);
+                doc.text(lastResponse.replace(/<br>/g, "\n").replace(/<strong>|<\/strong>/g, ""), 10, 10);
+                doc.save("Chhota_Helper_Project.pdf");
+            } catch (e) {
+                addMessage(isHindi ? "PDF बनाने में दिक्कत हुई, दोबारा आजमाएं!" : "Error creating PDF, try again!", "bot-message");
             }
         }
 
@@ -246,5 +329,6 @@
             if (e.key === "Enter") sendMessage();
         });
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </body>
 </html>
