@@ -13,10 +13,7 @@
             padding: 20px;
             animation: fadeIn 1s ease-in;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         h1 {
             color: #ff4500;
             font-size: 45px;
@@ -51,25 +48,10 @@
             border-radius: 12px;
             animation: slideIn 0.5s ease-in;
         }
-        @keyframes slideIn {
-            from { transform: translateX(-100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        .bot-message {
-            background-color: #87cefa;
-            color: #000;
-            text-align: left;
-        }
-        .user-message {
-            background-color: #ffb6c1;
-            color: #000;
-            text-align: right;
-        }
-        #input-area {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-        }
+        @keyframes slideIn { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .bot-message { background-color: #87cefa; color: #000; text-align: left; }
+        .user-message { background-color: #ffb6c1; color: #000; text-align: right; }
+        #input-area { display: flex; gap: 15px; justify-content: center; }
         #user-input {
             width: 60%;
             padding: 12px;
@@ -91,6 +73,19 @@
             transform: scale(1.1);
             background-color: #ff1493;
         }
+        footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #ff4500;
+            text-shadow: 1px 1px #ffd700;
+        }
+        footer a {
+            color: #ff69b4;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -99,97 +94,23 @@
         <div id="chat-box">
             <div class="message bot-message" id="welcome-msg">
                 Hello, chhote dost! Main hoon Chhota Helper – tumhara project buddy! 🌟<br>
-                Batao: Class number, Subject, Topic, aur kya chahiye (text, chart, image)?<br>
-                Example: "Class 5, Science, Solar System, text aur chart"
+                Batao: Class number aur Topic (e.g., "Class 5, Volcano")<br>
+                Main pura research karke text, chart, aur image ideas doonga!
             </div>
         </div>
         <div id="input-area">
-            <input type="text" id="user-input" placeholder="Apna sawal likho...">
+            <input type="text" id="user-input" placeholder="Class aur Topic likho...">
             <button id="send-btn" onclick="sendMessage()">Send</button>
             <button id="lang-btn" onclick="toggleLanguage()">Hindi</button>
         </div>
     </div>
+    <footer>
+        Powered by <a href="http://webtechinfinity.com" target="_blank">webtechinfinity.com</a>
+    </footer>
 
     <script>
-        // Language toggle
         let isHindi = false;
 
-        // Enhanced database with more subjects/topics
-        const subjectsDb = {
-            "Science": {
-                "Solar System": {
-                    "text_en": "The Solar System has 8 planets that orbit the Sun.",
-                    "text_hi": "सोलर सिस्टम में 8 ग्रह हैं जो सूरज के चारों ओर चक्कर लगाते हैं।",
-                    "chart_en": "Draw a big circle for the Sun and 8 smaller circles for planets. Use colors!",
-                    "chart_hi": "सूरज के लिए एक बड़ा गोला और ग्रहों के लिए 8 छोटे गोले बनाओ। रंग भरें!",
-                    "image_en": "Print a colorful Solar System photo.",
-                    "image_hi": "सोलर सिस्टम का रंगीन फोटो प्रिंट करो।"
-                },
-                "Plants": {
-                    "text_en": "Plants give us oxygen, like tulsi and neem.",
-                    "text_hi": "पौधे हमें ऑक्सीजन देते हैं, जैसे तुलसी और नीम।",
-                    "chart_en": "Draw 5 plants with names and colors.",
-                    "chart_hi": "5 पौधों के चित्र बनाओ – नाम और रंग डालो।",
-                    "image_en": "Show a garden photo.",
-                    "image_hi": "बगीचे का फोटो दिखाओ।"
-                }
-            },
-            "Maths": {
-                "Shapes": {
-                    "text_en": "Shapes are different – circle, square, triangle.",
-                    "text_hi": "आकृतियाँ अलग-अलग होती हैं – गोला, चौकोर, त्रिकोण।",
-                    "chart_en": "Draw 5 shapes on paper and color them differently.",
-                    "chart_hi": "कागज पर 5 आकृतियाँ बनाओ और अलग-अलग रंग भरें।",
-                    "image_en": "Print a colorful shapes chart.",
-                    "image_hi": "आकृतियों का रंगीन चार्ट प्रिंट करो।"
-                },
-                "Numbers": {
-                    "text_en": "Numbers help us count – 1, 2, 3, and more.",
-                    "text_hi": "संख्याएँ हमें गिनने में मदद करती हैं – 1, 2, 3, और आगे।",
-                    "chart_en": "Write numbers 1 to 10 with drawings (like 3 stars).",
-                    "chart_hi": "1 से 10 तक संख्याएँ लिखें और चित्र बनाएँ (जैसे 3 तारे)।",
-                    "image_en": "Use a number line picture.",
-                    "image_hi": "नंबर लाइन का चित्र इस्तेमाल करो।"
-                }
-            },
-            "Social Studies": {
-                "India": {
-                    "text_en": "India is a big country with 28 states.",
-                    "text_hi": "भारत एक बड़ा देश है जिसमें 28 राज्य हैं।",
-                    "chart_en": "Draw India’s map and color 5 states.",
-                    "chart_hi": "भारत का नक्शा बनाओ और 5 राज्यों को रंग दो।",
-                    "image_en": "Print a map of India.",
-                    "image_hi": "भारत का नक्शा प्रिंट करो।"
-                }
-            },
-            "Hindi": {
-                "Varnmala": {
-                    "text_en": "Hindi has an alphabet called Varnmala with 46 letters.",
-                    "text_hi": "हिंदी में वर्णमाला होती है जिसमें 46 अक्षर हैं।",
-                    "chart_en": "Write 10 Hindi letters with pictures (like क for कबूतर).",
-                    "chart_hi": "10 हिंदी अक्षर लिखें और चित्र बनाएँ (जैसे क के लिए कबूतर)।",
-                    "image_en": "Print a Hindi alphabet chart.",
-                    "image_hi": "हिंदी वर्णमाला का चार्ट प्रिंट करो।"
-                }
-            }
-        };
-
-        // Mental health responses
-        const stressWords = ["nahi aata", "darr", "mushkil", "stress", "tension", "scared", "hard"];
-        const motivation = {
-            "en": [
-                "Don’t worry, try one small step!",
-                "You’re super smart, it’ll be easy soon!",
-                "Have fun, you’ll make the best project!"
-            ],
-            "hi": [
-                "टेंशन मत लो, एक छोटा कदम आजमाओ!",
-                "तुम बहुत होशियार हो, सब आसान हो जाएगा!",
-                "मज़े करो, तुम सबसे अच्छा प्रोजेक्ट बनाओगे!"
-            ]
-        };
-
-        // Adjust content based on class level
         function adjustLevel(classNum) {
             if (classNum >= 1 && classNum <= 2) return "simple";
             if (classNum >= 3 && classNum <= 5) return "medium";
@@ -197,88 +118,121 @@
             return "invalid";
         }
 
-        // Toggle language
         function toggleLanguage() {
             isHindi = !isHindi;
             document.getElementById("lang-btn").innerText = isHindi ? "English" : "Hindi";
             const welcomeMsg = isHindi ? 
-                "हाय, छोटे दोस्त! मैं हूँ छोटा हेल्पर – तुम्हारा प्रोजेक्ट दोस्त! 🌟<br>बताओ: क्लास नंबर, सब्जेक्ट, टॉपिक, और क्या चाहिए (टेक्स्ट, चार्ट, इमेज)?<br>उदाहरण: 'क्लास 5, साइंस, सोलर सिस्टम, टेक्स्ट और चार्ट'" :
-                "Hello, chhote dost! Main hoon Chhota Helper – tumhara project buddy! 🌟<br>Batao: Class number, Subject, Topic, aur kya chahiye (text, chart, image)?<br>Example: 'Class 5, Science, Solar System, text aur chart'";
+                "हाय, छोटे दोस्त! मैं हूँ छोटा हेल्पर – तुम्हारा प्रोजेक्ट दोस्त! 🌟<br>बताओ: क्लास नंबर और टॉपिक (जैसे 'क्लास 5, वोल्केनो')<br>मैं पूरा रिसर्च करके टेक्स्ट, चार्ट, और इमेज आइडियाज़ दूंगा!" :
+                "Hello, chhote dost! Main hoon Chhota Helper – tumhara project buddy! 🌟<br>Batao: Class number aur Topic (e.g., 'Class 5, Volcano')<br>Main pura research karke text, chart, aur image ideas doonga!";
             document.getElementById("welcome-msg").innerHTML = welcomeMsg;
         }
 
-        // Send message function
-        function sendMessage() {
+        async function fetchWikipedia(topic) {
+            const url = `https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&format=json&titles=${encodeURIComponent(topic)}&origin=*`;
+            try {
+                addMessage(isHindi ? "थोड़ा रुकें, मैं ढूंढ रहा हूँ..." : "Wait a sec, I’m researching...", "bot-message");
+                const response = await fetch(url);
+                const data = await response.json();
+                const pages = data.query.pages;
+                const pageId = Object.keys(pages)[0];
+                if (pageId === "-1" || !pages[pageId].extract) {
+                    return null;
+                }
+                const extract = pages[pageId].extract;
+                return extract.split(". ").map(s => s + ".");
+            } catch (error) {
+                console.error("API Error:", error);
+                return null;
+            }
+        }
+
+        function generateResponse(classNum, topic, level, sentences) {
+            const langSuffix = isHindi ? "hi" : "en";
+            let text, chart, image;
+
+            // Adjust text by class level
+            if (sentences) {
+                if (level === "simple") {
+                    text = sentences[0]; // First sentence only
+                } else if (level === "medium") {
+                    text = sentences.slice(0, 2).join(" "); // First 2 sentences
+                } else {
+                    text = sentences.slice(0, 4).join(" "); // Up to 4 sentences
+                }
+            } else {
+                text = isHindi ? 
+                    `${topic} के बारे में कुछ रोचक बातें सीखें।` : 
+                    `Learn some cool facts about ${topic}.`;
+            }
+
+            // Topic-specific chart and image ideas
+            if (topic.toLowerCase().includes("volcano") || topic.toLowerCase().includes("earth") || topic.toLowerCase().includes("plant")) {
+                chart = level === "simple" ? 
+                    (isHindi ? `${topic} का एक आसान चित्र बनाओ।` : `Make a simple ${topic} drawing.`) :
+                    level === "medium" ? 
+                    (isHindi ? `${topic} का चित्र बनाओ और नाम लिखो।` : `Draw ${topic} with labels.`) :
+                    (isHindi ? `${topic} का विस्तृत चित्र बनाओ, रंग और नामों के साथ।` : `Create a detailed ${topic} diagram with colors and labels.`);
+                image = isHindi ? `${topic} की एक तस्वीर ढूंढो।` : `Find a picture of ${topic}.`;
+            } else if (topic.toLowerCase().includes("fraction") || topic.toLowerCase().includes("number") || topic.toLowerCase().includes("math")) {
+                chart = level === "simple" ? 
+                    (isHindi ? `${topic} का छोटा टेबल बनाओ।` : `Draw a small ${topic} table.`) :
+                    level === "medium" ? 
+                    (isHindi ? `${topic} का टेबल बनाओ।` : `Make a ${topic} table.`) :
+                    (isHindi ? `${topic} का ग्राफ बनाओ उदाहरणों के साथ।` : `Draw a ${topic} graph with examples.`);
+                image = isHindi ? `${topic} का उदाहरण चित्र लाओ।` : `Get an example picture of ${topic}.`;
+            } else {
+                chart = level === "simple" ? 
+                    (isHindi ? `${topic} का आसान चित्र बनाओ।` : `Draw a simple ${topic} picture.`) :
+                    level === "medium" ? 
+                    (isHindi ? `${topic} का नक्शा बनाओ।` : `Make a ${topic} map.`) :
+                    (isHindi ? `${topic} का विस्तृत चार्ट या टाइमलाइन बनाओ।` : `Create a detailed ${topic} chart or timeline.`);
+                image = isHindi ? `${topic} का फोटो या नक्शा ढूंढो।` : `Find a photo or map of ${topic}.`;
+            }
+
+            return { text, chart, image };
+        }
+
+        async function sendMessage() {
             const userInput = document.getElementById("user-input").value.trim().toLowerCase();
             if (!userInput) return;
 
-            // Display user message
             addMessage(userInput, "user-message");
             document.getElementById("user-input").value = "";
 
-            // Exit condition
             if (userInput === "bye") {
                 addMessage(isHindi ? "बाय-बाय! प्रोजेक्ट में मज़े करो!" : "Bye-bye! Project mein maza karna!", "bot-message");
                 return;
             }
 
-            // Parse input
             try {
                 const parts = userInput.split(",");
                 const classNum = parseInt(parts[0].replace("class", "").trim());
-                const subject = parts[1].trim().charAt(0).toUpperCase() + parts[1].trim().slice(1);
-                const topic = parts[2].trim().charAt(0).toUpperCase() + parts[2].trim().slice(1);
-                const outputTypes = parts[3].split("aur").map(x => x.trim());
+                const topic = parts[1].trim().charAt(0).toUpperCase() + parts[1].trim().slice(1);
 
-                // Check class validity
                 const level = adjustLevel(classNum);
                 if (level === "invalid") {
                     addMessage(isHindi ? "क्लास 1 से 8 तक ही बोलो!" : "Class 1 se 8 tak hi bolo!", "bot-message");
                     return;
                 }
 
-                // Check subject and topic
-                if (!subjectsDb[subject] || !subjectsDb[subject][topic]) {
-                    addMessage(isHindi ? "सॉरी, ये सब्जेक्ट या टॉपिक मेरे पास अभी नहीं है। कुछ और बोलो!" : 
-                        "Sorry, yeh subject ya topic abhi mere paas nahi hai. Kuch aur bolo!", "bot-message");
-                    return;
-                }
-
-                // Generate response
                 let response = isHindi ? 
                     `हाय, छोटे दोस्त! ये रहा तुम्हारा ${topic} का प्रोजेक्ट (क्लास ${classNum}):<br>` :
                     `Hello, chhote dost! Yeh raha tumhara ${topic} ka project (Class ${classNum}):<br>`;
-                const content = subjectsDb[subject][topic];
 
-                outputTypes.forEach(output => {
-                    const langSuffix = isHindi ? "_hi" : "_en";
-                    if (output === "text") {
-                        if (level === "simple") response += `Text: ${content["text" + langSuffix].split(".")[0]}.<br>`;
-                        else if (level === "medium") response += `Text: ${content["text" + langSuffix]}<br>`;
-                        else response += `Text: ${content["text" + langSuffix]} ${isHindi ? "और इस टॉपिक के बारे में और जान सकते हो!" : "And you can learn more about this topic!"}<br>`;
-                    } else if (output === "chart") {
-                        response += `Chart: ${content["chart" + langSuffix]}<br>`;
-                    } else if (output === "image") {
-                        response += `${isHindi ? "इमेज आइडिया" : "Image Idea"}: ${content["image" + langSuffix]}<br>`;
-                    } else {
-                        response += `${output} ${isHindi ? "नहीं समझ आया, टेक्स्ट/चार्ट/इमेज में से बोलो!" : "nahi samajh aaya, text/chart/image mein se bolo!"}<br>`;
-                    }
-                });
+                const researchData = await fetchWikipedia(topic);
+                const content = generateResponse(classNum, topic, level, researchData);
 
-                // Mental health check
-                if (stressWords.some(word => userInput.includes(word))) {
-                    const motivLang = isHindi ? "hi" : "en";
-                    response += `${motivation[motivLang][Math.floor(Math.random() * motivation[motivLang].length)]}<br>`;
-                }
+                response += `Text: ${content.text}<br>`;
+                response += `Chart: ${content.chart}<br>`;
+                response += `${isHindi ? "इमेज आइडिया" : "Image Idea"}: ${content.image}<br>`;
 
                 addMessage(response, "bot-message");
             } catch (e) {
-                addMessage(isHindi ? "कुछ गलत बोला तुमने, ठीक से बोलो जैसे उदाहरण में है!" : 
-                    "Kuch galat bola tumne, thik se bolo jaise example mein hai!", "bot-message");
+                addMessage(isHindi ? "कुछ गलत बोला तुमने, ठीक से बोलो जैसे 'Class 5, Volcano'!" : 
+                    "Kuch galat bola tumne, thik se bolo jaise 'Class 5, Volcano'!", "bot-message");
             }
         }
 
-        // Add message to chat box
         function addMessage(text, className) {
             const chatBox = document.getElementById("chat-box");
             const messageDiv = document.createElement("div");
@@ -288,7 +242,6 @@
             chatBox.scrollTop = chatBox.scrollHeight;
         }
 
-        // Send message on Enter key
         document.getElementById("user-input").addEventListener("keypress", function(e) {
             if (e.key === "Enter") sendMessage();
         });
